@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:8bitbuddhist/nixos-hardware?ref=surface-rust-target-spec-fix";
-    hyprland.url = "github:hyprwm/Hyprland?ref=v0.53.3";
+    hyprland.url = "github:hyprwm/Hyprland"; # ?ref=v0.53.3";
 
     rose-pine-hyprcursor = {
       url = "github:ndom91/rose-pine-hyprcursor";

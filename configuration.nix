@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
@@ -132,7 +132,7 @@
     tree
     libwacom
     libwacom-surface
-    nputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
   ];
 
   programs.zoxide.enable = true;
@@ -157,6 +157,8 @@
   programs.xfconf.enable = true;
   services.gvfs.enable = true;
   services.tumbler.enable = true;
+
+  programs.steam.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
