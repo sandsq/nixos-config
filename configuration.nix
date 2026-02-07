@@ -46,11 +46,7 @@
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
 
-  nix.settings = {
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-  };
+
 
 
   # Set your time zone.
@@ -98,6 +94,8 @@
     powerOnBoot = true;
   };
   services.blueman.enable = true;
+
+  # so signins persist or something (like zed)
   services.gnome.gnome-keyring.enable = true;
 
 
