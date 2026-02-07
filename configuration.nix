@@ -13,17 +13,12 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
     enable = true;
-    configurationLimit = 10;
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
 
-  nix.settings.auto-optimise-store = true;
+
+
 
   # Use latest kernel.
   # boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -31,8 +26,20 @@
   {
     kernelVersion = "stable";
   };
+  services.iptsd = {
+    enable = true;
+    config = {
+      Touchscreen.DisableOnStylus = true;
+    };
+  };
   # microsoft-surface.ipts.enable = true;
   # config.microsoft-surface.surface-control.enable = true;
+
+  fileSystems."/mnt/sd256" = {
+    device = "/dev/disk/by-uuid/2408d4f6-1793-452c-81b0-554064c097ea";
+    fsType = "ext4";
+    options = ["defaults" "noatime"];
+  };
 
   # networking.hostName = "nixos"; # Define your hostname.
 
@@ -91,7 +98,7 @@
     powerOnBoot = true;
   };
   services.blueman.enable = true;
-
+  services.gnome.gnome-keyring.enable = true;
 
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -110,11 +117,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  programs.hyprland = {
-    enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-  };
+
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -132,7 +135,6 @@
     tree
     libwacom
     libwacom-surface
-    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
   ];
 
   programs.zoxide.enable = true;

@@ -1,4 +1,10 @@
 {
+  ###########
+  ## To Dos
+  ###########
+  # modularize
+  # webcam
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:8bitbuddhist/nixos-hardware?ref=surface-rust-target-spec-fix";
@@ -19,6 +25,7 @@
         nixos-hardware.nixosModules.microsoft-surface-common
         nixos-hardware.nixosModules.microsoft-surface-pro-intel
         ./configuration.nix
+        ./nixosModules
       ];
     };
   };
