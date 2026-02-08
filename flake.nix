@@ -5,6 +5,7 @@
   # modularize
   # webcam
   # home manager
+  # fix file picker not working in zed
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -41,7 +42,7 @@
           home-manager.useUserPackages = true;
 
           home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.users.sand = import ./home.nix;
+          home-manager.users.sand = import ./homeManagerModules;
         }
       ];
 

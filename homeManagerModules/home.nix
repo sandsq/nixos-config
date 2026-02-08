@@ -10,12 +10,15 @@
       inputs.hyprgrass.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
-    extraConfig = builtins.readFile ./dotfiles/hypr/hyprland.conf;
+    extraConfig = builtins.readFile ../dotfiles/hypr/hyprland.conf;
 
   };
 
   home.packages = with pkgs; [
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+    hyprpicker
+    hyprlock
+    hypridle
   ];
 
   programs.kitty = {

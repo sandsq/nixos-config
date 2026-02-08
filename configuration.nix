@@ -37,6 +37,23 @@
 
 
   environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # need for file picker
+    # config = {
+    #   preferred = {
+    #     default = [ "hyprland" ];
+    #     "org.freedesktop.impl.portal.FileChooser" = [
+    #       "gtk"
+    #     ];
+    #   };
+    # };
+    config = {
+      hyprland.default = [ "hyprland" "gtk" ];
+      hyprland."org.freedesktop.portal.FileChooser" = [ "gtk" ];
+      hyprland."org.freedesktop.portal.openURI" = [ "gtk" ];
+    };
+  };
 
   # networking.hostName = "nixos"; # Define your hostname.
 
@@ -47,7 +64,7 @@
 
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/Indianapolis";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -129,6 +146,10 @@
     tree
     libwacom
     libwacom-surface
+    killall
+    jq
+    brightnessctl
+    # xdg-desktop-portal-gtk
   ];
 
   programs.zoxide.enable = true;
@@ -156,11 +177,25 @@
 
   programs.steam.enable = true;
 
+  programs.obs-studio.enable = true;
+
   fonts.packages = with pkgs; [
     ubuntu-sans
     ubuntu-sans-mono
     nerd-fonts.fira-code
+    # font-awesome
   ];
+
+  systemd.services.usbwakeup = {
+    script = ''
+      echo enabled > /sys/bus/usb/devices/1-5/power/wakeup
+      echo enabled > /sys/bus/usb/devices/1-7/power/wakeup
+      echo enabled > /sys/bus/usb/devices/2-4/power/wakeup
+      echo enabled > /sys/bus/usb/devices/usb1/power/wakeup
+      echo enabled > /sys/bus/usb/devices/usb2/power/wakeup
+    '';
+    wantedBy = [ "multi-user.target" ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
