@@ -19,7 +19,12 @@
     hyprpicker
     hyprlock
     hypridle
+    grimblast
   ];
+
+  services.hyprpaper = {
+    enable = true;
+  };
 
   programs.kitty = {
     enable = true;
@@ -27,6 +32,15 @@
     font.name = "Departure Mono";
     font.size = 16.0;
     themeFile = "GruvboxMaterialLightMedium";
+  };
+
+  programs.yazi = {
+    enable = true;
+    settings = {
+      mgr = {
+        show_hidden = true;
+      };
+    };
   };
 
   home.stateVersion = "26.05";
