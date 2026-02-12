@@ -58,6 +58,7 @@
       main = {
         font = "Departure Mono:size=16";
         placeholder = "hello c:";
+        icon-theme = "Dracula";
       };
       colors = {
         background = "#3e2861ee";

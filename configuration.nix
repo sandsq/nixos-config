@@ -183,6 +183,7 @@
     pavucontrol
     libnotify
     dunst
+    dracula-icon-theme
   ];
 
   programs.zoxide.enable = true;
