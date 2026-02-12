@@ -38,17 +38,25 @@
   programs.kitty = {
     enable = true;
     # font.name = "ubuntu-sans-mono";
+    settings = {
+      shell = "fish";
+    };
     font.name = "Departure Mono";
     font.size = 16.0;
     themeFile = "GruvboxMaterialLightMedium";
   };
 
+  programs.fish = {
+    enable = true;
+    # shellInitLast = "starship init fish | source";
+  };
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
   };
   programs.yazi = {
     enable = true;
+    enableFishIntegration = true;
     settings = {
       mgr = {
         show_hidden = true;

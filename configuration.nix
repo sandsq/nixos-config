@@ -139,11 +139,19 @@
       "wheel"
       "networkmanager"
     ];
-    shell = pkgs.fish;
+    shell = pkgs.bash;
   };
-
+  # programs.bash = {
+  #   interactiveShellInit = ''
+  #     if grep -qv 'fish' /proc/$PPID/comm && [[ ${SHLVL} == [1,2] ]]
+  #     then
+  #      	shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+  #      	exec fish $LOGIN_OPTION
+  #     fi
+  #   '';
+  # };
+  # programs.fish.enable = true;
   programs.firefox.enable = true;
-  programs.fish.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"
