@@ -123,7 +123,7 @@
   services.blueman.enable = true;
 
   services.upower.enable = true;
-  services.power-profiles-daemon.enable = true;
+  # services.power-profiles-daemon.enable = true;
 
   # so signins persist or something (like zed)
   services.gnome.gnome-keyring.enable = true;
@@ -195,9 +195,6 @@
     wvkbd
   ];
 
-  programs.zoxide.enable = true;
-  programs.zoxide.enableFishIntegration = true;
-
   programs.thunar = {
     enable = true;
     plugins = with pkgs; [
@@ -231,7 +228,18 @@
     '';
     wantedBy = [ "multi-user.target" ];
   };
-
+  services.thermald.enable = true;
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_BAT = 0;
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      START_CHARGE_THRESH_BAT1 = "75";
+      STOP_CHARGE_THRESH_BAT1 = "80";
+    };
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

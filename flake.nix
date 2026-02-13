@@ -14,7 +14,7 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware.url = "github:8bitbuddhist/nixos-hardware?ref=surface-rust-target-spec-fix";
+    nixos-hardware.url = "github:8bitbuddhist/nixos-hardware?ref=surface-kernel-6.18";
     hyprland.url = "github:hyprwm/Hyprland"; # ?ref=v0.53.3";
     hyprgrass = {
       url = "github:horriblename/hyprgrass";
