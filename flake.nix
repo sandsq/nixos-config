@@ -39,10 +39,10 @@
       ...
     }:
     {
-      microsoft-surface.ipts.enable = true;
-      config.microsoft-surface.surface-control.enable = true;
-      nixosConfigurations = {
 
+      nixosConfigurations = {
+        microsoft-surface.ipts.enable = true;
+        config.microsoft-surface.surface-control.enable = true;
         nixos-surface = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
 
