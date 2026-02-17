@@ -14,7 +14,7 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware.url = "github:8bitbuddhist/nixos-hardware?ref=surface-kernel-6.18";
+    nixos-hardware.url = "github:NixOS/nixos-hardware?rev=66e1a090ded57a0f88e2b381a7d4daf4a5722c3f";
     hyprland.url = "github:hyprwm/Hyprland"; # ?ref=v0.53.3";
     hyprgrass = {
       url = "github:horriblename/hyprgrass";
@@ -41,7 +41,7 @@
     {
       microsoft-surface.ipts.enable = true;
       config.microsoft-surface.surface-control.enable = true;
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.nixos-surface = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
 
         modules = [
