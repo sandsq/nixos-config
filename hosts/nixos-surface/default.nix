@@ -96,14 +96,11 @@
   services.upower.enable = true;
   # services.power-profiles-daemon.enable = true;
 
-  # so signins persist or something (like zed)
-  services.gnome.gnome-keyring.enable = true;
-
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
   services.libinput.touchpad.disableWhileTyping = false;
-  # Define a user account. Don't forget to set a password with ‘passwd’.
 
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sand = {
     isNormalUser = true;
     home = "/home/sand";
@@ -113,16 +110,6 @@
     ];
     shell = pkgs.bash;
   };
-  # programs.bash = {
-  #   interactiveShellInit = ''
-  #     if grep -qv 'fish' /proc/$PPID/comm && [[ ${SHLVL} == [1,2] ]]
-  #     then
-  #      	shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
-  #      	exec fish $LOGIN_OPTION
-  #     fi
-  #   '';
-  # };
-  # programs.fish.enable = true;
 
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;

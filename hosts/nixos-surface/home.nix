@@ -7,33 +7,10 @@
   home.username = "sand";
   home.homeDirectory = "/home/sand";
 
-  wayland.windowManager.hyprland = {
-    enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    plugins = [
-      inputs.hyprgrass.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ];
-
-    extraConfig = builtins.readFile ../dotfiles/hypr/hyprland.conf;
-
-  };
-
-  home.packages = with pkgs; [
-    inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
-    hyprpicker
-    hyprlock
-    hypridle
-    grimblast
-    hyprlang
-    hyprls
-    hyprsunset
+  imports = [
+    ../../home_manager_modules
   ];
-
-  services.hyprpaper = {
-    enable = true;
-  };
+  hyprland_home_manager_module.enable = true;
 
   programs.kitty = {
     enable = true;
