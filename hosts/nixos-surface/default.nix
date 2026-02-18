@@ -18,6 +18,7 @@
   thunar.enable = true;
   sound_module.enable = true;
   bluetooth_module.enable = true;
+  fonts.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
@@ -163,14 +164,6 @@
   programs.steam.enable = true;
 
   programs.obs-studio.enable = true;
-
-  fonts.packages = with pkgs; [
-    ubuntu-sans
-    ubuntu-sans-mono
-    nerd-fonts.fira-code
-    nerd-fonts.departure-mono
-    departure-mono
-  ];
 
   services.logind.settings.Login = {
 
