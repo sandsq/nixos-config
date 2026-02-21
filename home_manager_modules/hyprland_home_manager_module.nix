@@ -37,6 +37,19 @@ in
       extraConfig = builtins.readFile cfg.conf_path;
     };
 
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # need for file picker
+      config = {
+        preferred = {
+          default = [ "hyprland" ];
+          "org.freedesktop.impl.portal.FileChooser" = [
+            "gtk"
+          ];
+        };
+      };
+    };
+
     home.packages = with pkgs; [
       inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
       hyprpicker
@@ -46,6 +59,8 @@ in
       hyprlang
       hyprls
       hyprsunset
+      wl-clipboard
+      socat
     ];
 
     services.hyprpaper = {

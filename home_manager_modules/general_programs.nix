@@ -2,11 +2,46 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }:
 {
 
-  home.packages = with pkgs; [ ];
+  home.packages = with pkgs; [
+    libnotify
+    dunst
+
+    zed-editor
+    nil
+    nixd
+    package-version-server
+    tree
+
+    kdePackages.qtwayland
+    kdePackages.qtsvg
+    kdePackages.qtimageformats
+    kdePackages.qtmultimedia
+    kdePackages.qt5compat
+
+    eww
+
+    killall
+
+    gh
+
+    jq
+    bc
+
+    inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+    quickshell
+
+    dropbox
+    fastfetch
+    libcamera
+  ];
+
+  programs.firefox.enable = true;
+
   programs.kitty = {
     enable = true;
     settings = {

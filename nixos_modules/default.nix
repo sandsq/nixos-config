@@ -6,7 +6,11 @@
     ./dvorak.nix
     ./fonts.nix
     ./garbage_collection.nix
+    ./laptop.nix
+    ./obs.nix
     ./sound_module.nix
+    ./steam.nix
     ./thunar.nix
+    ./touchscreen.nix
   ];
 }

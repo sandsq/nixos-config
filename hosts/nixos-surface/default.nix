@@ -19,6 +19,10 @@
   sound_module.enable = true;
   bluetooth_module.enable = true;
   fonts.enable = true;
+  laptop.enable = true;
+  touchscreen.enable = true;
+  obs.enable = true;
+  steam.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
@@ -49,26 +53,6 @@
     "/share/applications"
     "/share/xdg-desktop-portal"
   ];
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # need for file picker
-    # config = {
-    #   preferred = {
-    #     default = [ "hyprland" ];
-    #     "org.freedesktop.impl.portal.FileChooser" = [
-    #       "gtk"
-    #     ];
-    #   };
-    # };
-    config = {
-      hyprland.default = [
-        "hyprland"
-        "gtk"
-      ];
-      hyprland."org.freedesktop.portal.FileChooser" = [ "gtk" ];
-      hyprland."org.freedesktop.portal.openURI" = [ "gtk" ];
-    };
-  };
 
   networking.hostName = "nixos-surface"; # Define your hostname.
 
@@ -93,13 +77,6 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  services.upower.enable = true;
-  # services.power-profiles-daemon.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
-  services.libinput.touchpad.disableWhileTyping = false;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sand = {
     isNormalUser = true;
@@ -107,88 +84,12 @@
     extraGroups = [
       "wheel"
       "networkmanager"
+      "video"
     ];
     shell = pkgs.bash;
   };
 
-  programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [
-    # fuzzel
-    wl-clipboard
-    gh
-    eww
-    zed-editor
-    tree
-    libwacom
-    libwacom-surface
-    killall
-    jq
-    brightnessctl
-    inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-    quickshell
-    kdePackages.qtwayland
-    kdePackages.qtsvg
-    kdePackages.qtimageformats
-    kdePackages.qtmultimedia
-    kdePackages.qt5compat
-    acpi
-    nil
-    nixd
-    package-version-server
-    socat
-    libnotify
-    dunst
-    dracula-icon-theme
-    wvkbd
-    bc
-    libinput
-    dropbox
-    dconf-editor
-    fastfetch
-  ];
-
-  programs.steam.enable = true;
-
-  programs.obs-studio.enable = true;
-
-  services.logind.settings.Login = {
-
-    HandlePowerKey = "suspend";
-    HandlePowerKeyLongPress = "poweroff";
-  };
-
-  # systemd.services.reenable_volume_buttons = {
-  #   script = ''
-  #     modprobe -r soc_button_array && modprobe soc_buttom_array
-  #   '';
-  #   wantedBy = [ "multi-user.target" ];
-  # }; # https://github.com/linux-surface/linux-surface/issues/1392#issuecomment-1989558759
-  boot.initrd.kernelModules = {
-    pinctrl_sunrisepoint = true;
-  };
-  systemd.services.usbwakeup = {
-    script = ''
-      echo enabled > /sys/bus/usb/devices/1-5/power/wakeup
-      echo enabled > /sys/bus/usb/devices/1-7/power/wakeup
-      echo enabled > /sys/bus/usb/devices/2-4/power/wakeup
-      echo enabled > /sys/bus/usb/devices/usb1/power/wakeup
-      echo enabled > /sys/bus/usb/devices/usb2/power/wakeup
-    '';
-    wantedBy = [ "multi-user.target" ];
-  };
-  services.thermald.enable = true;
-  services.tlp = {
-    enable = true;
-    settings = {
-      CPU_BOOST_ON_AC = 1;
-      CPU_BOOST_ON_BAT = 0;
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-      START_CHARGE_THRESH_BAT1 = "40";
-      STOP_CHARGE_THRESH_BAT1 = "80";
-    };
-  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

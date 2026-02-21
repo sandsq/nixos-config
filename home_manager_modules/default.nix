@@ -1,6 +1,7 @@
 {
   imports = [
     ./hyprland_home_manager_module.nix
-    ./programs.nix
+    ./general_programs.nix
+    ./theming.nix
   ];
 }
