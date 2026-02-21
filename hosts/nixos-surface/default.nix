@@ -90,6 +90,24 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+  environment.systemPackages = with pkgs; [
+    gh
+  ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # need for file picker
+    xdgOpenUsePortal = true;
+    config = {
+      hyprland.default = [
+        "hyprland"
+        "gtk"
+      ];
+      hyprland."org.freedesktop.portal.FileChooser" = [ "gtk" ];
+      hyprland."org.freedesktop.portal.openURI" = [ "gtk" ];
+    };
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

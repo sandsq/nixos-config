@@ -27,8 +27,6 @@
 
     killall
 
-    gh
-
     jq
     bc
 
