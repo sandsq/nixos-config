@@ -1,0 +1,21 @@
+{
+  "books": [
+    {
+      "title": "Northanger abbey",
+      "progress": 40
+    },
+
+    {
+      "title": "The divine comedy: volume 1: hell",
+      "progress": 51
+    },
+    {
+      "title": "The restaurant at the end of the universe",
+      "progress": 13
+    },
+    {
+      "title": "An arcane inheritance",
+      "progress": 18
+    }
+  ]
+}

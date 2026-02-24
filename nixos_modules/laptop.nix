@@ -18,6 +18,7 @@ in
     environment.systemPackages = with pkgs; [
       acpi
       brightnessctl
+      libcamera
     ];
     # Enable touchpad support (enabled default in most desktopManager).
     services.libinput.enable = true;

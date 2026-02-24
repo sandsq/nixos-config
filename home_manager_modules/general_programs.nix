@@ -35,8 +35,6 @@
 
     dropbox
     fastfetch
-    libcamera
-
   ];
   programs.vscode.enable = true;
 

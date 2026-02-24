@@ -1,0 +1,677 @@
+;;@@@@@@@@@@@@@@@
+; todos
+;; @@@@@@@@@@
+; place elements at milestone heights so battery % can be checked with bar
+; color change when battery under a certain amount
+; flash a workspace when a window opens there
+; dynamic quote resizing so it fits a specified size. window size change is a bit jarring every minute
+; @@@@@@
+; notes
+; @@@@@
+; in a widget, outermost *boxes themselves don't pad/margin out I think
+
+
+;; @@@@@@@@@@@@@@@@@@
+;; Sizing vars
+;; @@@@@@@@@@@@@@@
+(defvar bar_width "20px")
+
+(defwidget value_tester [?text]
+  (box :orentation "vertical"
+       :halign "center"
+       text))
+;; @@@@@@@@@@
+;; workspaces
+;; @@@@@@@@@@
+(defpoll initial_workspaces :interval "1h" "jq -s -c '{active: .[0], list: .[1]}' <(hyprctl activeworkspace -j) <(hyprctl workspaces -j | jq -c 'sort_by(.id)')")
+(deflisten workspace_info :initial -1 `scripts/process_workspaces.sh`)
+;
+(defvar workspace_icon_mapping `{
+    "1": "↳",
+    "2": "ƒ",
+    "3": "╅",
+    "4": "ζ",
+    "5": "◊",
+    "6": "♫"
+}`)
+(defwidget button_widget [?button_class value]
+    (eventbox
+        :onclick "hyprctl dispatch workspace ${value}"
+        :class "${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace' : '') : (initial_workspaces.active.id == value ? 'active_workspace' : ''))} workspaces_button_widget"
+        (box
+            :orientation "v"
+            :space-evenly false
+            ; (label :class "${button_class}  ${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace_text' : '') : (initial_workspaces.active.id == value ? 'active_workspace_text' : ''))} debug_border"
+            ; :text `${value}:`
+            ; )
+            (label
+                :class "${button_class}_icon  ${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace_text' : '') : (initial_workspaces.active.id == value ? 'active_workspace_text' : ''))} debug_border"
+                :text `${workspace_icon_mapping[value]?:''}`
+            )
+        )
+        )
+)
+(defwidget current_workspaces_widget []
+    (box
+        :class "current_workspaces"
+        :orientation "v"
+        :space-evenly false
+        ; (label :text "╩" :class "workspace_header_icon")
+            ; :style "font-size: 24px; margin-top: -1.4rem;")
+        (for workspace in "${(workspace_info == -1 ? initial_workspaces.list : workspace_info.list)}"
+            (button_widget
+                :button_class "workspaces_button_text"
+                ; "workspaces_button ${(current_workspace != -1 ? (current_workspace == workspace.id ? 'active_workspace' : '') : (initial_workspace == workspace.id ? 'active_workspace' : ''))} debug_border"
+                :value "${workspace.id}")
+        )
+    )
+    ; (label
+        ; :text "${(current_workspaces == -1 ? initial_workspace : current_workspace[1].id)}"
+        ; :truncate false)
+)
+;; @@@@@@@@@@@@@@@@@@@
+;; Time
+;; @@@@@@@@@@@@@@@@@@
+(defwidget clock [valignment]
+  (eventbox
+     :onclick "
+       if eww active-windows | grep -q my_calendar_window; then
+         eww close my_calendar_window;
+       else
+         eww open my_calendar_window;
+       fi
+     "
+    (box
+      :orientation "v"
+      :class "clock debug_border"
+      :valign valignment
+      :space-evenly false
+    (label :text "■" :xalign 0.4 :class "clock_icon")
+    (label :text "${formattime(EWW_TIME, '%H')}" :class "hour")
+    (label :text "${formattime(EWW_TIME, '%M')}" :class "minute")
+    (label :text "${formattime(EWW_TIME, '%S')}" :class "second")
+    ; (label :text "${formattime(EWW_TIME, '%p')}" :class "daycycle")
+    )
+    )
+)
+
+(defwidget my_calendar_widget []
+    (box :class "calendar_box"
+         :orientation "v"
+  (box :class "calendar_inner_box"
+    (calendar
+      :halign "center"
+      :valign "center"
+      :class "calendar_itself"
+      :show-details true
+    )
+    )
+  )
+)
+
+(defwindow my_calendar_window
+    :monitor '["DP-3", 0]'
+  :stacking "fg"
+  :geometry (geometry
+              :x "0.5%"
+              :y "0%"
+              :anchor "left center"
+            )
+  (my_calendar_widget)
+)
+
+; @@@@@@@@@
+; cpu and ram
+; @@@@@@@@@
+(defpoll cpu_usage :interval "1s" "eww get EWW_CPU > ./data/cpu.json")
+(defpoll cpu_temp :interval "1s" "eww get EWW_TEMPS > ./data/temps.json")
+(defpoll ram_usage :interval "1s" "eww get EWW_RAM > ./data/ram.json")
+(defwidget icon_widget [icon ?icon_class]
+    (box
+        :class "${icon_class} cancel_background"
+        :orientation "v"
+        (label :text icon)
+    )
+)
+
+(defwidget text_widget [text ?text_class]
+    (box
+        :class "${text_class} cancel_background"
+        :orientation "v"
+        (label :text text )
+    )
+)
+
+(defwidget small_temp_widget [?widget_classes]
+    (box
+        :orientation "v"
+        :class widget_classes
+        :space-evenly false
+    (icon_widget :icon "°C" :icon_class "small_temp_icon" )
+    (text_widget :text current_degrees :text_class "small_temp_text")
+    )
+)
+; ╬
+(defwidget cpu_widget [?widget_classes]
+    (box
+        :orientation "v"
+        :class widget_classes
+        :space-evenly false
+    (icon_widget :icon "✧" :icon_class "cpu_icon" )
+    (text_widget :text "${round(EWW_CPU.avg, 0)}%" :text_class "cpu_text")
+    )
+)
+
+(defwidget cpu_temp_widget [?widget_classes]
+    (box
+        :class widget_classes
+        :orientation "v"
+        :space-evenly false
+        (icon_widget :icon "╽" :icon_class "temp_icon")
+        (text_widget :text "${EWW_TEMPS.CORETEMP_PACKAGE_ID_0}°" :text_class "temp_text")
+    )
+)
+
+(defwidget ram_widget [?widget_classes]
+    (box
+        :class widget_classes
+        :orientation "v"
+        :space-evenly false
+        (icon_widget :icon "╥" :icon_class "ram_icon debug_border")
+        (text_widget :text "${round(EWW_RAM.used_mem_perc, 0)}%" :text_class "ram_text debug_border")
+    )
+)
+(defvar volume_icon "◄")
+
+; (defpoll volume_value :interval "1s" "wpctl get-volume @DEFAULT_SINK@")
+(defpoll initial_volume :interval "1h" "wpctl get-volume @DEFAULT_SINK@")
+(deflisten volume_value :initial -1 `tail -f data/current_volume.txt`)
+
+(defwidget volume_widget [?widget_classes]
+    (box :class widget_classes
+        (eventbox
+        :onclick `
+          if eww active-windows | grep -q volume_window; then
+            eww close volume_window;
+          else
+            eww open volume_window;
+          fi
+        `
+        ; :class widget_classes
+        (box
+            ; :class widget_classes
+            :orientation "v"
+            :space-evenly false
+            (icon_widget :icon volume_icon
+               :icon_class "volume_icon debug_border"
+            )
+            (text_widget :text "${round(replace(volume_value, 'Volume: ', '') * 100, 0)}%"
+                :text_class "volume_text debug_border"
+            )
+            ; (label :class "volume_icon" :text volume_icon)
+            ; (label :class "volume_text" :text "${round(replace(volume_value, 'Volume: ', '') * 100, 0)}%")
+        )
+        )
+    )
+)
+
+(defwindow volume_window
+    :monitor '["DP-3", 0]'
+  :geometry (geometry
+              :x "0.5%"
+              :y "14%"
+              :width "220px"
+              :height "80px"
+              :anchor "left bottom")
+  :stacking "fg"
+  :exclusive false
+  (box
+      :class "volume_outer"
+  (box
+      :class "volume_popup"
+      :orientation "h"
+    (scale
+      :class "volume_scale"
+      :active true
+      :hexpand true
+      :min 0
+      :max 100
+      :value "${(volume_value == -1 ? round(replace(initial_volume, 'Volume: ', '') * 100, 0) : replace(volume_value, 'Volume: ', '') * 100)}"
+      :onchange "scripts/set_volume.sh {}"
+      )
+    ; (label :text "${round(replace(volume_value, 'Volume: ', '') * 100, 0)}%"
+       ; :halign "center")
+  )
+  )
+)
+
+;; @@@@@@@@@@@
+;; Sys tray
+;; @@@@@@@@@@
+(defwidget my_systray []
+    (systray
+      :class "tray debug_border"
+      :orientation "v"
+      :halign "center"
+      :spacing -45
+      :height 100
+    )
+)
+
+
+
+;; @@@@@@@@@@@
+;; Battery
+;; @@@@@@@@@@
+(defpoll current_battery :interval "1m" "./scripts/check_battery_status.sh --capacity")
+(defpoll current_battery_status_icon :interval "1s" "./scripts/check_battery_status.sh --status-icon")
+
+(defpoll remaining_time :interval "1s" "./scripts/check_battery_status.sh --remaining-time")
+(defpoll end_time :interval "1s" "./scripts/check_battery_status.sh --end-time")
+
+
+
+(defwidget battery []
+    (eventbox
+        :onhover "eww open battery_tooltip_window"
+        :onhoverlost "eww close battery_tooltip_window"
+        :class "debug_border"
+            (box ; need this extra box so that the eventbox hover area covers the whole width
+                :class "battery"
+                :halign "center"
+                :orientation "v"
+                (label
+                    :class "battery_icon debug_border"
+                    :text current_battery_status_icon
+                )
+            )
+    )
+)
+(defwidget battery_tooltip_widget []
+    (box :orientation "v"
+        :halign "start"
+        :class "battery_tooltip"
+        (label
+            :halign "start"
+            :text "Battery: ${current_battery}%"
+        )
+        (label
+            :text "Remaining time: ${remaining_time}"
+            :halign "start"
+        )
+        (label
+            :text "End time: ${end_time}"
+            :halign "start"
+        )
+    )
+)
+
+(defwindow battery_tooltip_window
+    :monitor '["DP-3", 0]'
+    :geometry (geometry
+                :x "0.5%"
+                :y "1%"
+                ; :width "10%"
+                ; :height "10%"
+                :anchor "left bottom"
+              )
+    :stacking "fg"
+    :exclusive false
+    (battery_tooltip_widget)
+)
+; @@@@@@@@
+; avatar
+; @@@@@@
+(defwidget avatar_widget [path]
+    (box
+        :class "avatar_box"
+        :orientation "v"
+        :space-evenly false
+        (image
+            :image-width 124
+            :image-height 124
+            :path path
+        )
+        (label :text "sand" :class "avatar_text")
+    )
+    )
+;; @@@@@@@@@@@
+;; Currently Reading
+;; @@@@@@@@@@@
+(defpoll currently_reading_data :interval "10m" "cat /home/sand/.config/eww/data/currently_reading.json | jq .books")
+(defvar book_icon "")
+; (defvar book_icon "[]")
+; (defvar book_icon2 "▉")
+; (defvar book_icon1 "┇")
+
+(defwidget book_progress [title progress]
+  (box
+      :class "shelf"
+  (overlay
+    :orientation "h"
+    ; :space-evenly false
+    (box
+      :class "book_progress_icons debug_border"
+      :space-evenly false
+      :halign "start"
+      (label :class "book_progress_icon ${progress >= 10 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 20 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 30 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 40 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 50 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 60 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 70 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 80 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 90 ? "" : "empty"}" :text book_icon)
+      (label :class "book_progress_icon ${progress >= 100 ? "" : "empty"}" :text book_icon)
+      ; (label
+      ;     :class "book_title title_length_adjuster"
+      ;     :halign "start"
+      ;     :valign "end"
+      ;     :text title
+      ; )
+    )
+
+    (label
+      :class "book_title debug_border"
+      :halign "start"
+      :valign "end"
+      :xalign 0
+      :yalign 0
+      ; :truncate true
+      :wrap true
+      :wrap-mode "word"
+      :text title)
+
+  )))
+
+(defwidget currently_reading [reading_data]
+  (box
+    :orientation "v"
+    :class "bookshelf"
+    :space-evenly false
+    (for book in reading_data
+      (book_progress
+          :title "${book.title}"
+          :progress "${book.progress}"
+      )
+    )
+   )
+)
+
+; @@@@@@@@@@
+; disk usage
+; @@@@@@@@@
+(defpoll disk_info :interval "1m" "eww get EWW_DISK")
+(defwidget disk_usage_widget [drive icon ?text_class ?icon_class ?outer_class ?circle_class ?info_class]
+    (box
+        :class "circle_outer ${outer_class}"
+        :orientation "v"
+        :space-evenly false
+        (circular-progress
+            :class "circle_itself ${circle_class}"
+            :value "${round(disk_info[drive].used_perc, 0)}"
+            :thickness 10
+            :start-at 75
+            (box
+                :halign "center"
+                :valign "center"
+                :orientation "v"
+                :class "circle_info ${info_class}"
+                (label
+                    :text "${formatbytes(disk_info[drive].free, true, 'si')}"
+                )
+                (label
+                    :text "free"
+                )
+            )
+        )
+        (box
+            :orientation "h"
+            :space-evenly false
+            :halign "center"
+            :class "disk_info"
+            ; (label
+            ;     :class icon_class
+            ;     :text icon
+            ; )
+            (label
+                :class text_class
+                :text drive
+            )
+        )
+    )
+)
+; °C
+; @@@@@@@
+; weather
+; @@@@@@
+(defpoll weather_data :interval "5m" "scripts/get_weather_info.sh --getdata")
+(defpoll current_degrees :interval "5m" "scripts/get_weather_info.sh --temp")
+(defpoll current_weather_icon :interval "5m" "scripts/get_weather_info.sh --icon")
+(defpoll current_weather_stat :interval "5m" "scripts/get_weather_info.sh --stat")
+(defpoll sunrise_time_epoch :interval "10m" "scripts/get_weather_info.sh --sunrise_epoch")
+(defpoll sunset_time_epoch :interval "10m" "scripts/get_weather_info.sh --sunset_epoch")
+(defwidget weather_widget []
+    (box
+        :class "${(EWW_TIME >= sunrise_time_epoch && EWW_TIME <= sunset_time_epoch ? 'weather_outer_day' : 'weather_outer_night')} weather_outer_common"
+        ; :space-evenly false
+        ; :halign "center"
+        ; :valign "center"
+        (label :text weather_data :visible false)
+        (box
+            :orientation "v"
+            :space-evenly false
+            :class "debug_border"
+            (box
+                :halign "start"
+                :space-evenly false
+                :class "debug_border"
+                (label
+                    :class "${(EWW_TIME >= sunrise_time_epoch && EWW_TIME <= sunset_time_epoch ? 'weather_icon_day' : 'weather_icon_night')}"
+                    :text current_weather_icon)
+            )
+            (box
+                :orientation "v"
+                :space-evenly false
+                :class "${(EWW_TIME >= sunrise_time_epoch && EWW_TIME <= sunset_time_epoch ? 'weather_inner_day' : 'weather_inner_night')}"
+
+                (label
+                    :class "degrees_text"
+                    :text "${round(current_degrees, 0)}°C"
+                )
+                (label
+                    :text current_weather_stat
+                    :class "stat_text"
+                )
+            )
+        )
+    )
+)
+; @@@@@@
+; timequote widget
+; I got the quotes from literaryclock.com
+; @@@@@@@@
+(deflisten current_minute_quote :initial "-" `scripts/get_quote_for_minute.sh`)
+(defwidget current_minute_quote_widget []
+    (box :width 200
+        :height 350
+        :class "time_of_day_quote_outer_common ${(EWW_TIME >= sunrise_time_epoch && EWW_TIME <= sunset_time_epoch ? 'time_of_day_quote_outer_day' : 'time_of_day_quote_outer_night')}"
+        :orientation "v"
+        (box
+            :space-evenly false
+            :orientation "v"
+            :valign "center"
+        (label
+            :class " ${(EWW_TIME >= sunrise_time_epoch && EWW_TIME <= sunset_time_epoch ? 'quote_itself_day' : 'quote_itself_night')} debug_border"
+            :wrap true
+            :wrap-mode "word"
+            :justify "fill"
+            :markup "${replace(replace(replace(jq(current_minute_quote, '.quote', 'r'), '<br>', ' '), '<b>', '<u>'), '</b>', '</u>')}"
+        )
+        (label
+            :halign "end"
+            :wrap true
+            :wrap-mode "word"
+            :class " ${(EWW_TIME >= sunrise_time_epoch && EWW_TIME <= sunset_time_epoch ? 'quote_info_day' : 'quote_info_night')} debug_border"
+            :text "${jq(current_minute_quote, '.title', 'r')} by ${jq(current_minute_quote, '.author', 'r')}"
+        )
+        )
+    )
+)
+; @@@@@@@@@@@@@@@@@
+; bar
+; @@@@@@@@@@@@@@@@@@
+(defwidget bar_widget_top []
+    (box
+    :orientation "v"
+    :class "bar_contents_top"
+    ; :space_evenly false
+    :valign "start"
+    (current_workspaces_widget
+    )
+    )
+)
+(defwidget bar_widget_bottom []
+    (box
+            :orientation "v"
+            :class "bar_contents_bottom"
+            :space-evenly false
+            :valign "end"
+            ; :spacing 5
+            (box
+                :class "bottom_info_widgets"
+                :orientation "v"
+                :space-evenly false
+                (small_temp_widget :widget_classes "resource_widget first_resource_widget")
+                (cpu_widget :widget_classes "resource_widget")
+                (cpu_temp_widget :widget_classes "resource_widget")
+                (ram_widget :widget_classes "resource_widget")
+                (volume_widget :widget_classes "volume_widget resource_widget last_resource_widget")
+            )
+            ; (box :orientation "v"
+            ;     :class "resource_widget first_resource_widget"
+            ; (icon_widget :icon "✧" :icon_class "cpu_icon cancel_background debug_border")
+            ; (text_widget :text "${round(EWW_CPU.avg, 0)}%" :text_class "cpu_text cancel_background debug_border")
+            ; )
+            ; (box :orientation "v"
+            ;     :class "resource_widget"
+            ; (icon_widget :icon "╽" :icon_class "temp_icon cancel_background debug_border")
+            ; (text_widget :text "${EWW_TEMPS.CORETEMP_PACKAGE_ID_0}°" :text_class "temp_text_class cancel_background debug_border")
+            ; )
+            ; (box :orientation "v"
+            ;     :class "resource_widget last_resource_widget"
+            ; (icon_widget :icon "╥" :icon_class "ram_icon cancel_background debug_border") ; if I make a widget combining these two and then try to change the size of one, they will take on the same size for some reason.
+            ; (text_widget :text "${round(EWW_RAM.used_mem_perc, 0)}%" :text_class "ram_text_class cancel_background debug_border")
+            ; )
+            (my_systray)
+            (battery)
+          )
+)
+
+(defwindow my_vertical_bar
+    :monitor '["DP-3", 0]'
+        :geometry (geometry
+                    :x "0px"
+                    :y "0px"
+                    :width "20px"
+                    :height "100%"
+                    :anchor "center left")
+        :stacking "fg"
+        :exclusive true
+(overlay
+  :class "bar_itself"
+  (progress
+      :value "${EWW_BATTERY.BAT1.capacity}"
+      :orientation "v"
+      :flipped true
+  )
+  (centerbox
+      :orientation "v"
+      :class "centerbox"
+      (bar_widget_top)
+      (clock
+          :valignment "center"
+      )
+      (bar_widget_bottom)
+
+  )))
+; @@@@@@@
+; desktop info
+; @@@@@@
+(defwindow my_desktop_window
+    :monitor '["DP-3", 0]'
+        :geometry (geometry
+                    :x "0%"
+                    :y "0%"
+                    ; :width "20%"
+                    ; :height "20%"
+                    :anchor "center center")
+        :stacking "bg"
+        :exclusive false
+    (box
+        :class "desktop_window"
+        :spacing 10
+        :space-evenly false
+        :orientation "v"
+        (box
+            :space-evenly false
+            (current_minute_quote_widget)
+        )
+        (box
+            :class "row1"
+            :orientation "h"
+            :spacing 10
+            ; :space-evenly false
+            (avatar_widget :path "/home/sand/Downloads/hourglass.png")
+            (disk_usage_widget :drive "/" :icon "╏" :text_class "root_text" :icon_class "root_icon")
+            (disk_usage_widget
+                :drive "/mnt/sd256" :icon "┸" :text_class "sd_text" :icon_class "sd_icon"
+                :outer_class "sd_outer" :circle_class "sd_itself" :info_class "sd_info")
+            ;
+        )
+        (box
+            :class "row2"
+            :orientation "h"
+            :spacing 10
+            :space-evenly false
+            :halign "end"
+            (box :orientation "v"
+                :space-evenly false
+                (weather_widget)
+                (label :text "")
+            )
+            (currently_reading
+                :reading_data currently_reading_data)
+        )
+
+
+
+    )
+    )
+; /mnt/sd256/SteamLibrary/steamapps/common/Aseprite/aseprite
+(defwindow aseprite_launcher
+    :monitor 0
+    :geometry (geometry
+                        :x "0%"
+                        :y "2%"
+                        ; :width "20%"
+                        ; :height "20%"
+                        :anchor "bottom center")
+    :stacking "bg"
+    (box
+        (eventbox
+
+            :class "aseprite_launcher"
+            :onclick "steam-run /mnt/sd256/SteamLibrary/steamapps/common/Aseprite/aseprite &"
+            (image :path "data/aseprite.png"
+                :image-width 32
+                :image-height 32
+            )
+            ; (label
+            ;     :text "aseprite"
+            ; )
+        )
+
+    )
+)

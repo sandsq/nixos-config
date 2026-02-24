@@ -1,0 +1,639 @@
+/* @import "gruvboxish"; */
+$color0_bg: #282828;
+$color1_red: #82313b;
+$color2_green: #3f5242;
+$color3_yellow: #e6b77b;
+$color4_blue: #458588;
+$color5_purple: #5c468c;
+$color6_aqua: #689d6a;
+$color7_gray: #a89984;
+$color8_gray_alt: #928374;
+$color9_red: #fb4934;
+$color10_green: #629e64;
+$color11_yellow: #fed078;
+$color12_blue: #72c4bf;
+$color13_purple: #d3869b;
+$color14_aqua: #8ec07c;
+$color15_fg: #ebdbb2;
+$color16_brown: #472f18;
+
+$color_bg0_hard: #1d2021;
+$color_bg0: #282828;
+$color_bg0_soft: #32302f;
+$color_bg1: #3c3836;
+$color_bg2: #504945;
+$color_bg3: #665c54;
+$color_bg4: #7c6f64;
+
+$color_fg0_hard: #f9f5d7;
+$color_fg0: #fbf1c7;
+$color_fg0_soft: #f2e5bc;
+$color_fg1: #ebdbb2;
+$color_fg2: #d5c4a1;
+$color_fg3: #bdae93;
+$color_fg4: #a89984;
+
+$text_stroke_width: 0.125rem;
+$theme_border_radius: 0px;
+
+// @@@@@@@@@@@@@@@@@@
+// Global Styles
+// @@@@@@@@@@@@@@@@@@
+* {
+    all: unset;
+    font-family: "DepartureMono", "FontAwesome", "Ubuntu Sans Mono";
+    /* opacity: 0.95; */
+}
+
+box {
+    color: $color_fg0_soft;
+    /* background-color: $color_bg0_soft; */
+    background-color: rgba(0, 0, 0, 0);
+}
+
+progressbar {
+    background-color: $color11_yellow;
+}
+
+progressbar > trough {
+    min-width: 2.5rem;
+    background-color: $color11_yellow;
+    border: 0;
+}
+
+progress {
+    background-color: $color2_green;
+    border: 0;
+    min-width: 2.5rem;
+    border-radius: $theme_border_radius;
+}
+// @@@@@@@@@@@@@@@@@
+// workspaces
+// @@@@@@@@@@@@@@@@@
+.workspace_header_icon {
+    font-size: 24px;
+    margin-top: -1.4rem;
+    color: $color1_red;
+}
+$stroke_color: $color11_yellow;
+.workspaces_button_text {
+    /* margin: 1rem; */
+    padding: 0.3rem 0 0rem 0;
+    color: $color_fg0_soft;
+    font-weight: bold;
+    text-shadow:
+        0.0625rem 0.0625rem 0 $stroke_color,
+        0.0625rem -0.0625rem 0 $stroke_color,
+        -0.0625rem 0.0625rem 0 $stroke_color,
+        -0.0625rem -0.0625rem 0 $stroke_color,
+        0.0625rem 0 0 $stroke_color,
+        0 0.0625rem 0 $stroke_color,
+        -0.0625rem 0 0 $stroke_color,
+        0 -0.0625rem 0 $stroke_color;
+    /* margin: 0 -1rem 0 -1rem; */
+    /* border-bottom: 3px solid black; */
+}
+.workspaces_button_text_icon {
+    /* margin-left: 0.8rem; */
+    font-size: 20px;
+    padding: 1rem 0 0.3rem 0;
+    font-weight: bold;
+    color: $color1_red;
+    text-shadow:
+        0.0625rem 0.0625rem 0 $stroke_color,
+        0.0625rem -0.0625rem 0 $stroke_color,
+        -0.0625rem 0.0625rem 0 $stroke_color,
+        -0.0625rem -0.0625rem 0 $stroke_color,
+        0.0625rem 0 0 $stroke_color,
+        0 0.0625rem 0 $stroke_color,
+        -0.0625rem 0 0 $stroke_color,
+        0 -0.0625rem 0 $stroke_color;
+}
+.workspaces_button_widget {
+    /* border-radius: 1rem; */
+    /* border-bottom: 0.2rem solid $color1_red; */
+    /* border: 1px solid $color11_yellow; */
+    /* background-color: $color2_green; */
+}
+
+.workspaces_button_widget:hover {
+    /* background-color: rgba($color_bg0_soft, 0.5); */
+
+    border-bottom: 0.2rem solid $color1_red;
+}
+.active_workspace {
+    /* background-color: $color1_red; */
+
+    border-bottom: 0.2rem solid $color1_red;
+}
+.active_workspace:hover {
+    /* background-color: rgba($color1_red, 0.5); */
+
+    /* background-color: rgba($color_bg0_soft, 0.5); */
+}
+.active_workspace_text {
+    /* color: $main_accent_color; */
+}
+.current_workspaces {
+    margin: -0.5rem 0.3rem 0.2rem 0.3rem;
+    background-color: rgba(0, 0, 0, 0);
+    /* border: 0.1rem solid $color1_red; */
+    padding: 1rem 0 1rem 0;
+}
+// @@@@@@@@@@@@@@@@@@
+// clock
+// @@@@@@@@@@@@@@@@@@
+$clock_text_stroke_color: $color11_yellow;
+.clock {
+    background-color: rgba(0, 0, 0, 0);
+    color: $color_bg0_soft;
+    border-radius: $theme_border_radius;
+    padding-bottom: 0.1875rem;
+    text-shadow:
+        0.0625rem 0.0625rem 0 $clock_text_stroke_color,
+        0.0625rem -0.0625rem 0 $clock_text_stroke_color,
+        -0.0625rem 0.0625rem 0 $clock_text_stroke_color,
+        -0.0625rem -0.0625rem 0 $clock_text_stroke_color,
+        0.0625rem 0 0 $clock_text_stroke_color,
+        0 0.0625rem 0 $clock_text_stroke_color,
+        -0.0625rem 0 0 $clock_text_stroke_color,
+        0 -0.0625rem 0 $clock_text_stroke_color;
+}
+
+.hour {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: -0.5rem;
+}
+
+.minute {
+    font-size: 14px;
+    font-weight: bold;
+    margin: -0.375rem 0 0 0;
+}
+
+.second {
+    font-size: 12px;
+    font-weight: bold;
+    margin: -0.25rem 0 0 0.5rem;
+}
+
+.clock_icon {
+    margin-left: 0.3rem;
+    margin-bottom: 0;
+}
+
+.calendar_box {
+    background-color: $color2_green;
+    padding: 1rem 0.6rem 0 0.6rem;
+    opacity: 0.9;
+    border: 0.5rem solid $color3_yellow;
+    border-radius: $theme_border_radius;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.calendar_inner_box {
+    background-color: $color2_green;
+    padding: 0.625rem;
+}
+
+.calendar_itself {
+    background-color: $color2_green;
+    color: $color3_yellow;
+    padding: 0.625rem;
+}
+calendar {
+    all: unset; // need this otherwise the calendar will have weird white lines
+    /* background-color: $color2_green; */
+}
+calendar:selected {
+    color: mintcream;
+    font-weight: bold;
+}
+
+calendar.header {
+    border-bottom: 0.25rem solid $color3_yellow;
+    margin: 0.3125rem 0 0 0.3125rem;
+}
+
+calendar.highlight {
+    color: $color3_yellow;
+}
+
+calendar.button {
+    color: $color3_yellow;
+}
+
+calendar:indeterminate {
+    color: rgba($color3_yellow, 0.5);
+}
+
+calendar:hover {
+    background-color: mintcream;
+}
+
+// @@@@@@@@@@@@@
+// resource monitor
+// @@@@@@@@@@@@@
+.bottom_info_widgets {
+    background-color: $color1_red;
+    border: 0.1rem solid $color11_yellow;
+    margin: 0 0.3rem 0 0.3rem;
+    padding: 1rem 0 1.75rem 0;
+}
+.resource_widget {
+    color: $color11_yellow;
+    /* border-right: 0.1rem solid $color11_yellow; */
+    margin: 1rem 0 0 0;
+}
+.first_resource_widget {
+    /* padding-top: 2rem; */
+    /* border-top: 0.1rem solid $color11_yellow; */
+}
+.last_resource_widget {
+    /* padding-bottom: 2.25rem; */
+    /* border-bottom: 0.1rem solid $color11_yellow; */
+}
+.cancel_background {
+    background-color: rgba(255, 255, 255, 0);
+    color: $color11_yellow;
+    font-size: 11px;
+    font-weight: bold;
+}
+.simple_monitor_class {
+    /* background-color: $color1_red; */
+    /* font-size: 12px;  */
+    /* font-weight: bold; */
+    /* color: $color11_yellow; */
+    /* box-shadow:
+        inset 0.7rem 0rem 0.3rem -0.3rem rgba($color_fg0_soft, 0.7),
+        inset -0.7rem 0rem 0.3rem -0.3rem rgba($color_fg0_soft, 0.7); */
+}
+.small_temp_icon {
+    font-size: 16px;
+    margin: 0rem 0.2rem 0rem 0.2rem;
+}
+.small_temp_text {
+    font-size: 16px;
+}
+.cpu_icon {
+    font-size: 24px;
+    /* margin: 0rem 0.2rem -2rem 0.2rem; */
+    /* margin: 0.5rem 0 -0.3rem 0; */
+    /* margin-top: 0.5rem; */
+}
+.cpu_text {
+    /* padding: 0px 0 0px 0; */
+    font-size: 12px;
+    /* margin-top: 1.2rem; */
+}
+.temp_icon {
+    font-size: 20px;
+    /* margin: 1rem 0 -0.5rem 0; */
+}
+
+.temp_text {
+    font-size: 12px;
+    /* margin: -0.7rem 0 -1rem 0; */
+}
+
+.ram_icon {
+    font-size: 20px;
+}
+.ram_text {
+    font-size: 11px;
+}
+.widgets {
+    background-color: rgba(255, 255, 255, 0);
+}
+.resource_monitor {
+    background-color: rgba(255, 255, 255, 0);
+    /* margin-bottom: 0.625rem; */
+}
+
+// @@@@@@@@@@@@
+// volume
+// @@@@@@@@@
+
+.volume_icon {
+    font-size: 20px;
+    margin-top: 0.5rem;
+}
+.volume_text {
+    font-size: 11px;
+    font-weight: bold;
+}
+.volume_widget {
+}
+.volume_outer {
+    background-color: $color2_green;
+    border: 0.5rem solid $color11_yellow;
+}
+
+.volume_outer slider {
+    all: unset; // gets rid of the circle
+}
+.volume_popup scale trough highlight {
+    all: unset;
+    background-color: $color11_yellow;
+}
+
+.volume_popup scale trough {
+    all: unset;
+    background-color: rgba($color11_yellow, 0.4);
+    border-radius: 0px;
+    min-height: 10px;
+    min-width: 100px;
+    margin: 0 10px 0 20px;
+}
+
+// @@@@@@@@@@@@@@@@@@
+// battery
+// @@@@@@@@@@@@@@@@@@
+.battery {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.battery_icon {
+    color: $color11_yellow;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 24px;
+}
+
+.battery_tooltip {
+    background-color: $color11_yellow;
+    color: $color_bg0_soft;
+    border-radius: $theme_border_radius;
+    border: 0.25rem solid $color2_green;
+    padding: 0.3125rem;
+    min-width: 22rem;
+    font-weight: bold;
+    font-size: 18px;
+}
+// @@@@@@@@@@@@@@@@@@
+// tray
+// @@@@@@@@@@@@@@@@@@
+.tray {
+    min-height: 100px;
+    color: $color11_yellow;
+}
+
+.tray menu {
+    /* background-color: lightblue; */
+    background-color: $color_bg0_soft;
+}
+// @@@@@@@@@@@@@@@@@@
+// vertical bar
+// @@@@@@@@@@@@@@@@@@
+.bar_itself {
+}
+.bar_contents_top {
+    border: 0.1rem solid $color1_red;
+    margin: 1rem 0.3rem 0 0.3rem;
+    background-color: $color11_yellow;
+}
+.bar_contents_bottom {
+    background-color: rgba(255, 255, 255, 0);
+    margin: 0 0 1rem 0;
+}
+
+.centerbox {
+    background-color: rgba(125, 125, 125, 0);
+}
+// @@@@@@@@@
+// avatar
+// @@@@@@@
+.avatar_box {
+    opacity: 0.9;
+    padding: 1rem;
+    background-color: $color11_yellow;
+    border: $color_bg0 solid 0.5rem;
+}
+.avatar_text {
+    color: $color_bg0_soft;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 0.5rem 0 0 0;
+}
+// @@@@@@@@@@@@@@@@@@
+// currently reading
+// @@@@@@@@@@@@@@@@@@
+.bookshelf {
+    background: linear-gradient(to bottom, rgba($color_fg0_soft, 1), rgba($color_fg0_soft, 1));
+    border: 0.5rem solid $color11_yellow;
+    box-shadow: inset 0 0 0 0.75rem $color16_brown;
+    padding: 0.5rem 0.65rem 0 0.65rem;
+    border-radius: $theme_border_radius;
+    min-width: 6.25rem;
+    font-size: 24px;
+    opacity: 0.9;
+}
+
+$title_text_color: $color_fg0_soft;
+$title_stroke_color: $color_bg0_soft;
+
+.book_title {
+    color: $title_text_color;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow:
+        $text_stroke_width $text_stroke_width 0 $title_stroke_color,
+        0.125rem -0.125rem 0 $title_stroke_color,
+        -0.125rem 0.125rem 0 $title_stroke_color,
+        -0.125rem -0.125rem 0 $title_stroke_color,
+        0.125rem 0 0 $title_stroke_color,
+        0 0.125rem 0 $title_stroke_color,
+        -0.125rem 0 0 $title_stroke_color,
+        0 -0.125rem 0 $title_stroke_color;
+}
+
+.shelf {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0 0.6rem 0 0rem;
+    border-bottom: 1rem solid $color16_brown;
+    box-shadow: inset 0 0.375rem 0.75rem rgba($color16_brown, 0.8);
+}
+
+.book_progress_icons {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.book_progress_icon {
+    opacity: 1;
+    margin: -0.125rem 0 -0.5625rem 0;
+    color: $color2_green;
+    text-shadow: 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.5);
+    font-size: 44px;
+    padding: 0 0.36rem 0 0.36rem;
+}
+
+.book_progress_icon.empty {
+    color: $color2_green;
+    opacity: 0.5;
+}
+
+.title_length_adjuster {
+}
+// @@@@@@@@@@@@@@
+// disk usage
+// @@@@@@@@@
+.circle_outer {
+    /* background-color: $color4_blue; */
+    background-color: $color16_brown;
+    padding: 1.25rem 1.25rem 1rem 1.25rem;
+    /* margin: 0rem 0.5rem 0rem 0.5rem; */
+    border: 0.5rem solid $color11_yellow;
+    opacity: 0.9;
+}
+.sd_outer {
+    background-color: $color4_blue;
+    opacity: 0.9;
+}
+.circle_itself {
+    color: rgba($color2_green, 0.5);
+    background-color: $color11_yellow;
+}
+.sd_itself {
+    color: rgba($color12_blue, 0.75);
+    background-color: $color11_yellow;
+}
+.circle_info {
+    /* color: $color11_yellow; */
+    /* background-color: $color12_blue; */
+    color: $color_fg0_soft;
+    background-color: $color2_green;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 3rem;
+}
+.sd_info {
+    background-color: $color6_aqua;
+}
+.root_text {
+    margin-top: 1rem;
+}
+.sd_text {
+    margin-top: 1rem;
+}
+.root_icon {
+    font-size: 28px;
+    /* padding: 0rem 1rem 0 0; */
+    margin: 0rem 1rem 0rem 0;
+}
+.sd_icon {
+    font-size: 28px;
+    padding: 1.2rem 1rem 0 0;
+}
+.disk_info {
+    font-size: 16px;
+    font-weight: bold;
+    /* margin-top: 1rem; */
+}
+// @@@@@@
+// weather
+// @@@@@@@
+.weather_outer_common {
+    opacity: 0.9;
+    /* padding: 0 4rem 0 4rem; */
+    padding: 1rem;
+    /* margin: 0 1rem 0 0; */
+}
+.weather_outer_night {
+    background-color: $color_bg0_soft;
+    color: $color_fg0_soft;
+    /* background-color: $color4_blue; */
+    border: 0.5rem solid $color11_yellow;
+}
+.weather_outer_day {
+    color: $color_bg0_soft;
+    background-color: $color11_yellow;
+    border: 0.5rem solid $color_bg0_soft;
+}
+.weather_inner_night {
+    color: $color_fg0_soft;
+}
+.weather_inner_day {
+    color: $color_bg0_soft;
+}
+.weather_icon_day {
+    font-size: 48px;
+    margin: -1.25rem 0 -0.5rem -0.5rem;
+    color: $color_bg0_soft;
+}
+.weather_icon_night {
+    font-size: 48px;
+    margin: -1.25rem 0 -0.5rem -0.5rem;
+    padding: 1rem 0 0.5rem 0;
+}
+.degrees_text {
+    font-size: 36px;
+    font-weight: bold;
+}
+.stat_text {
+    font-size: 16px;
+}
+// @@@@@@@
+// time of day quote
+// @@@@@@@@@
+.time_of_day_quote_outer_common {
+    font-size: 20px;
+    /* font-weight: bold; */
+    padding: 1rem;
+    opacity: 0.9;
+}
+.time_of_day_quote_outer_day {
+    background-color: $color11_yellow;
+    color: $color_bg0_soft;
+    border: 0.5rem solid $color_bg0_soft;
+}
+.time_of_day_quote_outer_night {
+    background-color: $color_bg0_soft;
+    color: $color11_yellow;
+    /* color: black; */
+    border: 0.5rem solid $color11_yellow;
+}
+.quote_itself_day {
+    color: $color_bg0_soft;
+}
+.quote_itself_night {
+    color: $color_fg0_soft;
+}
+.quote_info_night {
+    font-weight: normal;
+    font-size: 16px;
+    padding: 0.5rem 0 0 0;
+}
+.quote_info_day {
+    font-weight: normal;
+    font-size: 16px;
+    padding: 0.5rem 0 0 0;
+    color: $color_bg0_soft;
+}
+// @@@@@@
+// desktop window
+// @@@@@@@
+.desktop_window {
+    /* background-color: rgba(red, 0.1); */
+}
+.aseprite_launcher {
+    /* padding: 1rem 0 0 0; */
+    /* margin: 1rem 0 0 0; */
+}
+.aseprite_launcher:hover {
+    background-color: rgba($color_bg0_soft, 0.7);
+}
+// @@@@@@@@@@@@@@@@@@
+// debug
+// @@@@@@@@@@@@@@@@@@
+.debug_border {
+    /* border: 1px solid lightblue; */
+}
+
+.no_background {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.no_opacity {
+    opacity: 0;
+}
