@@ -140,6 +140,11 @@ $stroke_color: $color11_yellow;
     /* border: 0.1rem solid $color1_red; */
     padding: 1rem 0 1rem 0;
 }
+.urgent_workspace_class {
+    /* padding: 0.2rem; */
+    /* color: lightblue; */
+    background-color: $color13_purple;
+}
 // @@@@@@@@@@@@@@@@@@
 // clock
 // @@@@@@@@@@@@@@@@@@
@@ -558,7 +563,7 @@ $title_stroke_color: $color_bg0_soft;
 }
 .weather_icon_day {
     font-size: 48px;
-    margin: -1.25rem 0 -0.5rem -0.5rem;
+    margin: -1rem 0 -0.2rem -0.5rem;
     color: $color_bg0_soft;
 }
 .weather_icon_night {

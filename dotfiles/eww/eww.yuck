@@ -5,6 +5,7 @@
 ; color change when battery under a certain amount
 ; flash a workspace when a window opens there
 ; dynamic quote resizing so it fits a specified size. window size change is a bit jarring every minute
+; change battery depending on hardware?
 ; @@@@@@
 ; notes
 ; @@@@@
@@ -23,9 +24,10 @@
 ;; @@@@@@@@@@
 ;; workspaces
 ;; @@@@@@@@@@
-(defpoll initial_workspaces :interval "1h" "jq -s -c '{active: .[0], list: .[1]}' <(hyprctl activeworkspace -j) <(hyprctl workspaces -j | jq -c 'sort_by(.id)')")
+(defpoll initial_workspaces :interval "1h" `jq -s -c '{active: .[0], list: .[1], urgent: -1}' <(hyprctl activeworkspace -j) <(hyprctl workspaces -j | jq -c 'sort_by(.id)')`)
 (deflisten workspace_info :initial -1 `scripts/process_workspaces.sh`)
-;
+; (deflisten urgent_workspace :initial `{"urgent": -2}` `tail -F /home/sand/.cache/eww/urgent.json`)
+
 (defvar workspace_icon_mapping `{
     "1": "↳",
     "2": "ƒ",
@@ -37,17 +39,23 @@
 (defwidget button_widget [?button_class value]
     (eventbox
         :onclick "hyprctl dispatch workspace ${value}"
-        :class "${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace' : '') : (initial_workspaces.active.id == value ? 'active_workspace' : ''))} workspaces_button_widget"
+        :class "${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace' : '') : (initial_workspaces.active.id == value ? 'active_workspace' : ''))}  workspaces_button_widget"
         (box
             :orientation "v"
             :space-evenly false
             ; (label :class "${button_class}  ${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace_text' : '') : (initial_workspaces.active.id == value ? 'active_workspace_text' : ''))} debug_border"
             ; :text `${value}:`
             ; )
+            (box
+                :class "${button_class}_icon  ${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace_text' : '') : (initial_workspaces.active.id == value ? 'active_workspace_text' : ''))} debug_border "
             (label
-                :class "${button_class}_icon  ${(workspace_info != -1 ? (workspace_info.active.id == value ? 'active_workspace_text' : '') : (initial_workspaces.active.id == value ? 'active_workspace_text' : ''))} debug_border"
+
+            :class "${(workspace_info != -1 ? (workspace_info.urgent == value ? 'urgent_workspace_class' : '') : '')}"
                 :text `${workspace_icon_mapping[value]?:''}`
             )
+            )
+            ; (label
+                ; :text "${workspace_info.urgent}")
         )
         )
 )
@@ -56,12 +64,9 @@
         :class "current_workspaces"
         :orientation "v"
         :space-evenly false
-        ; (label :text "╩" :class "workspace_header_icon")
-            ; :style "font-size: 24px; margin-top: -1.4rem;")
         (for workspace in "${(workspace_info == -1 ? initial_workspaces.list : workspace_info.list)}"
             (button_widget
                 :button_class "workspaces_button_text"
-                ; "workspaces_button ${(current_workspace != -1 ? (current_workspace == workspace.id ? 'active_workspace' : '') : (initial_workspace == workspace.id ? 'active_workspace' : ''))} debug_border"
                 :value "${workspace.id}")
         )
     )
@@ -348,7 +353,7 @@
   (box
       :class "shelf"
   (overlay
-    :orientation "h"
+    ; :orientation "h"
     ; :space-evenly false
     (box
       :class "book_progress_icons debug_border"
