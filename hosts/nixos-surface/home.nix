@@ -18,9 +18,10 @@
   # source ${config.system.build.setEnvironment}
   home.activation = {
     set_up_eww = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      run ln -sf $HOME/nixos-config-surface/dotfiles/eww $HOME/.config/eww
+      run ln -sf /home/sand/nixos-config/dotfiles/eww /home/sand/.config/eww
     '';
   };
 
+  # run ln -sf $HOME/nixos-config/dotfiles/eww $HOME/.config/eww
   home.stateVersion = "26.05";
 }

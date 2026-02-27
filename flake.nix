@@ -8,6 +8,7 @@
   # fix file picker not working in zed
   # package a pixel art icon theme
   # write eww scripts with writeShellApplication
+  # set up env variables to nixos-config directory
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {

@@ -36,6 +36,13 @@
     dropbox
     fastfetch
   ];
+  programs.git = {
+    enable = true;
+    settings.user = {
+      name = "sandsq";
+      email = "116196797+sandsq@users.noreply.github.com";
+    };
+  };
   programs.vscode.enable = true;
 
   programs.firefox.enable = true;
