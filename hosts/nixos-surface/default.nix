@@ -25,6 +25,14 @@
   obs.enable = true;
   steam.enable = true;
 
+  #     run ln -sf /home/sand/nixos-config/dotfiles/eww /home/sand/.config/eww
+  system.activationScripts = {
+    symlink_eww = {
+      text = ''
+        ln -sfn /home/sand/nixos-config/dotfiles/eww /home/sand/.config/eww
+      '';
+    };
+  };
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
     enable = true;
