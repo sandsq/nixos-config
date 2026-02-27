@@ -40,9 +40,10 @@
     }:
     {
       nixosConfigurations = {
-        microsoft-surface.ipts.enable = true;
-        config.microsoft-surface.surface-control.enable = true;
+
         nixos-surface = nixpkgs.lib.nixosSystem {
+          # microsoft-surface.ipts.enable = true; # these are already enabled in the nixos-hardware modules for surface
+          # config.microsoft-surface.surface-control.enable = true;
           specialArgs = { inherit inputs; };
           modules = [
             nixos-hardware.nixosModules.microsoft-surface-common
@@ -57,7 +58,21 @@
               home-manager.users.sand = import ./hosts/nixos-surface/home.nix;
             }
           ];
+        };
+        nixos-L14 = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            nixos-hardware.nixosModules.lenovo-thinkpad-l14-amd
+            ./hosts/nixos-L14
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
+              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.users.sand = import ./hosts/nixos-L14/home.nix;
+            }
+          ];
         };
       };
     };

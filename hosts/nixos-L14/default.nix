@@ -20,7 +20,7 @@
   bluetooth_module.enable = true;
   fonts.enable = true;
   laptop.enable = true;
-  touchscreen.enable = true;
+  touchscreen.enable = false;
   obs.enable = true;
   steam.enable = true;
 
@@ -30,25 +30,14 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  hardware.microsoft-surface = {
-    kernelVersion = "stable";
-  };
-
-  fileSystems."/mnt/sd256" = {
-    device = "/dev/disk/by-uuid/2408d4f6-1793-452c-81b0-554064c097ea";
-    fsType = "ext4";
-    options = [
-      "defaults"
-      "noatime"
-    ];
-  };
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   environment.pathsToLink = [
     "/share/applications"
     "/share/xdg-desktop-portal"
   ];
 
-  networking.hostName = "nixos-surface"; # Define your hostname.
+  networking.hostName = "nixos-L14"; # Define your hostname.
 
   # Set your time zone.
   time.timeZone = "America/Indianapolis";
