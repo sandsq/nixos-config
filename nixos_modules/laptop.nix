@@ -12,6 +12,10 @@ in
   options = {
     laptop = {
       enable = mkEnableOption "enable laptop things";
+      allow_wakeup_script_path = mkOption {
+        type = types.path;
+        default = ../hosts/nixos-surface/allow_wakeup.sh;
+      };
     };
   };
   config = mkIf cfg.enable {
@@ -32,7 +36,7 @@ in
     };
 
     systemd.services.usbwakeup = {
-      script = buildits.readfile ../hosts/nixos-surface/allow_wakeup.sh;
+      script = builtins.readFile cfg.allow_wakeup_script_path;
       wantedBy = [ "multi-user.target" ];
     };
     services.thermald.enable = true;

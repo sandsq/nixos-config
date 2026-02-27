@@ -14,7 +14,7 @@ in
       enable = mkEnableOption "enables garbage_collection";
       configuration_limit = mkOption {
         type = types.int;
-        default = 10;
+        default = 20;
       };
       frequency = mkOption {
         type = types.str;
