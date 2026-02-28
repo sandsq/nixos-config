@@ -642,8 +642,6 @@
             (disk_usage_widget
                 :drive "/mnt/sd256" :icon "┸" :text_class "sd_text" :icon_class "sd_icon"
                 :outer_class "sd_outer" :circle_class "sd_itself" :info_class "sd_info")
-            (label
-                :text hostname)
             )
         (box
             :class "row2"
