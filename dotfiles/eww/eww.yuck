@@ -23,7 +23,7 @@
 }`)
 (defvar hostname_to_cpu `{
 "nixos-surface": "CORETEMP_PACKAGE_ID_0",
-"nixos-L14": "K10TEMP_CTCL"
+"nixos-L14": "K10TEMP_TCTL"
 }`)
 
 (defwidget value_tester [?text]
@@ -137,9 +137,9 @@
 ; @@@@@@@@@
 ; cpu and ram
 ; @@@@@@@@@
-(defpoll cpu_usage :interval "1s" "eww get EWW_CPU > ./data/cpu.json")
-(defpoll cpu_temp :interval "1s" "eww get EWW_TEMPS > ./data/temps.json")
-(defpoll ram_usage :interval "1s" "eww get EWW_RAM > ./data/ram.json")
+; (defpoll cpu_usage :interval "1s" "eww get EWW_CPU > ./data/cpu.json")
+; (defpoll cpu_temp :interval "1s" "eww get EWW_TEMPS > ./data/temps.json")
+; (defpoll ram_usage :interval "1s" "eww get EWW_RAM > ./data/ram.json")
 (defwidget icon_widget [icon ?icon_class]
     (box
         :class "${icon_class} cancel_background"
@@ -182,7 +182,7 @@
         :orientation "v"
         :space-evenly false
         (icon_widget :icon "╽" :icon_class "temp_icon")
-        (text_widget :text "${EWW_TEMPS[hostname_to_cpu[hostname]]}°" :text_class "temp_text")
+        (text_widget :text "${round(EWW_TEMPS[hostname_to_cpu[hostname]], 0)}°" :text_class "temp_text")
     )
 )
 
@@ -596,7 +596,7 @@
 (overlay
   :class "bar_itself"
   (progress
-      :value "${EWW_BATTERY.BAT1.capacity}"
+      :value "${current_battery}"
       :orientation "v"
       :flipped true
   )
