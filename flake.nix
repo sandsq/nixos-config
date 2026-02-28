@@ -9,6 +9,10 @@
   # package a pixel art icon theme
   # write eww scripts with writeShellApplication
   # set up env variables to nixos-config directory
+  # separate dotfiles per host as well eg eww temps, hyprland configs (monitor size)
+  # fix function keys on thinkpad
+  # fix s key on thinkpad keyboard
+  # test thinkpad ports
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {

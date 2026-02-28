@@ -16,6 +16,15 @@
 ;; Sizing vars
 ;; @@@@@@@@@@@@@@@
 (defvar bar_width "20px")
+(defpoll hostname :interval "1h"  `uname -n`)
+(defvar hostname_to_battery `{
+    "nixos-surface": "BAT1",
+    "nixos-L14": "BAT0"
+}`)
+(defvar hostname_to_cpu `{
+"nixos-surface": "CORETEMP_PACKAGE_ID_0",
+"nixos-L14": "K10TEMP_CTCL"
+}`)
 
 (defwidget value_tester [?text]
   (box :orentation "vertical"
@@ -173,7 +182,7 @@
         :orientation "v"
         :space-evenly false
         (icon_widget :icon "╽" :icon_class "temp_icon")
-        (text_widget :text "${EWW_TEMPS.CORETEMP_PACKAGE_ID_0}°" :text_class "temp_text")
+        (text_widget :text "${EWW_TEMPS[hostname_to_cpu[hostname]]}°" :text_class "temp_text")
     )
 )
 
@@ -633,8 +642,9 @@
             (disk_usage_widget
                 :drive "/mnt/sd256" :icon "┸" :text_class "sd_text" :icon_class "sd_icon"
                 :outer_class "sd_outer" :circle_class "sd_itself" :info_class "sd_info")
-            ;
-        )
+            (label
+                :text hostname)
+            )
         (box
             :class "row2"
             :orientation "h"
