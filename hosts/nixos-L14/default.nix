@@ -20,6 +20,7 @@
   bluetooth_module.enable = true;
   fonts.enable = true;
   laptop.enable = true;
+  laptop.allow_wakeup_script_path = ./allow_wakeup.sh;
   touchscreen.enable = false;
   obs.enable = true;
   steam.enable = true;

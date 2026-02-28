@@ -31,7 +31,7 @@ in
       portalPackage =
         inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       plugins = [
-        inputs.hyprgrass.packages.${pkgs.stdenv.hostPlatform.system}.default
+        # inputs.hyprgrass.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
       extraConfig = builtins.readFile cfg.conf_path;

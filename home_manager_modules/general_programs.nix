@@ -43,6 +43,12 @@
       email = "116196797+sandsq@users.noreply.github.com";
     };
   };
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper = {
+      enable = true;
+    };
+  };
   programs.vscode.enable = true;
 
   programs.firefox.enable = true;
