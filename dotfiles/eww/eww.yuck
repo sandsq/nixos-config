@@ -148,6 +148,7 @@
     )
 )
 
+
 (defwidget text_widget [text ?text_class]
     (box
         :class "${text_class} cancel_background"
