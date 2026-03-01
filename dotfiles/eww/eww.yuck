@@ -277,11 +277,11 @@
 ;; @@@@@@@@@@@
 ;; Battery
 ;; @@@@@@@@@@
-(defpoll current_battery :interval "1m" "./scripts/check_battery_status.sh --capacity")
+(defpoll current_battery :interval "5s" "./scripts/check_battery_status.sh --capacity")
 (defpoll current_battery_status_icon :interval "1s" "./scripts/check_battery_status.sh --status-icon")
 
-(defpoll remaining_time :interval "1s" "./scripts/check_battery_status.sh --remaining-time")
-(defpoll end_time :interval "1s" "./scripts/check_battery_status.sh --end-time")
+(defpoll remaining_time :interval "5s" "./scripts/check_battery_status.sh --remaining-time")
+(defpoll end_time :interval "5s" "./scripts/check_battery_status.sh --end-time")
 
 
 

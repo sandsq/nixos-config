@@ -57,6 +57,7 @@
     enable = true;
     settings = {
       shell = "fish";
+      # background = "#000000";
     };
     font.name = "Departure Mono";
     font.size = 16.0;
