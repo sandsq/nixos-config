@@ -36,6 +36,7 @@
 (defpoll initial_workspaces :interval "1h" `jq -s -c '{active: .[0], list: .[1], urgent: -1}' <(hyprctl activeworkspace -j) <(hyprctl workspaces -j | jq -c 'sort_by(.id)')`)
 (deflisten workspace_info :initial -1 `scripts/process_workspaces.sh`)
 ; (deflisten urgent_workspace :initial `{"urgent": -2}` `tail -F /home/sand/.cache/eww/urgent.json`)
+(deflisten submap_info :initial "" `tail -F /home/sand/.cache/eww/submap.txt`)
 
 (defvar workspace_icon_mapping `{
     "1": "↳",
@@ -78,10 +79,9 @@
                 :button_class "workspaces_button_text"
                 :value "${workspace.id}")
         )
+
     )
-    ; (label
-        ; :text "${(current_workspaces == -1 ? initial_workspace : current_workspace[1].id)}"
-        ; :truncate false)
+
 )
 ;; @@@@@@@@@@@@@@@@@@@
 ;; Time
@@ -543,6 +543,9 @@
     ; :space_evenly false
     :valign "start"
     (current_workspaces_widget
+    )
+    (label
+        :text submap_info
     )
     )
 )

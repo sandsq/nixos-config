@@ -3,6 +3,8 @@
 # Track the current urgent workspace in memory
 urgent_id=-1
 
+mkdir -p $HOME/.cache/eww
+
 combine_and_output() {
   # produce combined JSON (active + list) and append urgent key
   combined=$(jq -s -c '{active: .[0], list: .[1]}' <(hyprctl activeworkspace -j) <(hyprctl workspaces -j | jq -c 'sort_by(.id)')) || return 1
@@ -59,6 +61,10 @@ handle() {
 
       combine_and_output
       ;;
+    submap*)
+        submap=$(printf "%s" "$1" | awk -F'>>' '{print $2}')
+        echo $submap > $HOME/.cache/eww/submap.txt
+        ;;
   esac
 }
 
