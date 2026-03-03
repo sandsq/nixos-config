@@ -3,16 +3,18 @@
   ## To Dos
   ###########
   # modularize
-  # webcam
-  # home manager
-  # fix file picker not working in zed
+  # doneish (works on L14 but not surface) - webcam
+  # done - home manager
+  # idk might be zed issue since picker works in vscode - fix file picker not working in zed
   # package a pixel art icon theme
-  # write eww scripts with writeShellApplication
+  # maybe - write eww scripts with writeShellApplication
   # set up env variables to nixos-config directory
   # separate dotfiles per host as well eg eww temps, hyprland configs (monitor size)
-  # fix function keys on thinkpad
-  # fix s key on thinkpad keyboard
-  # test thinkpad ports
+  # done (I think it was just a config things? idk what I did) - fix function keys on thinkpad
+  # done - fix s key on thinkpad keyboard
+  # done - test thinkpad ports
+  # figure out sleep inhibition issue
+  #
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {

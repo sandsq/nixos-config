@@ -3,9 +3,12 @@
 ;; @@@@@@@@@@
 ; place elements at milestone heights so battery % can be checked with bar
 ; color change when battery under a certain amount
-; flash a workspace when a window opens there
+; done - flash a workspace when a window opens there
 ; dynamic quote resizing so it fits a specified size. window size change is a bit jarring every minute
-; change battery depending on hardware?
+; done - change battery depending on hardware?
+; submap widget
+; maybe - change workspace processing to track created / destroyed workspaces instead of calling hyprctl workspaces -j every time
+
 ; @@@@@@
 ; notes
 ; @@@@@
