@@ -15,6 +15,7 @@
   # done - test thinkpad ports
   # figure out sleep inhibition issue
   # make vim the git editor
+  # fix dunst font
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {

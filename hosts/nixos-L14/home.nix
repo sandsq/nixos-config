@@ -18,5 +18,21 @@ in
   hyprland_home_manager_module.conf_path = ../../dotfiles/hypr/hosts/nixos-L14/hyprland.conf;
   hyprland_home_manager_module.include_basics = false;
 
+  home.packages = with pkgs; [
+    godot
+    nodejs
+    claude-code
+  ];
+  programs.claude-code.mcpServers = {
+    godot = {
+      command = "npx";
+      args = [
+        "-y"
+        "godot-mcp-server"
+      ];
+      type = "stdio";
+    };
+  };
+
   home.stateVersion = "26.05";
 }
